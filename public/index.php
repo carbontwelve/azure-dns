@@ -7,6 +7,10 @@ error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 
 $app = new \Carbontwelve\AzureDns\App();
+$app->get('/', function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response){
+    $response->getBody()->write('<h1>Hello World</h1>');
+    return $response;
+});
 $app->run();
 exit();
 

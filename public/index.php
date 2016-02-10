@@ -6,10 +6,15 @@ ini_set('display_errors', 1);
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = new \Carbontwelve\AzureDns\App();
-$app->get('/', function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response){
-    $response->getBody()->write('<h1>Hello World</h1>');
-    return $response;
+
+$app->addRequestMiddleware( function(){
+    header('Location: ' . 'http://www.google.co.uk');
+    exit;
 });
+
+$app->getRouter()->map('GET', '/', 'Carbontwelve\AzureDns\Controllers\Dashboard::index')
+    ->setName('dashboard');
+
 $app->run();
 exit();
 

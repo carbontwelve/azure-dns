@@ -1,0 +1,25 @@
+{
+    "name": "carbontwelve/azure-dns",
+    "description": "Azure DNS Management Tool",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Dann",
+            "email": "simon.dann@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "thenetworg/oauth2-azure": "^1.0",
+        "vlucas/phpdotenv": "^2.2",
+        "league/route": "~1",
+        "league/container": "~1.0",
+        "league/event": "~2.1",
+        "symfony/http-kernel" : "^3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Carbontwelve\\AzureDns\\": "src/"
+        }
+    }
+}

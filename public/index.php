@@ -1,10 +1,9 @@
 <?php
 session_start();
-
-require __DIR__ . '/../vendor/autoload.php';
-
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 1);
+
+require __DIR__ . '/../vendor/autoload.php';
 
 $app = new \Carbontwelve\AzureDns\App();
 $app->get('/', function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response){

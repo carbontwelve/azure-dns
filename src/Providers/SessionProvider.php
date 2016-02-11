@@ -29,8 +29,8 @@ class SessionProvider extends AbstractServiceProvider
             return $sessionFactory->newInstance($_COOKIE);
         });
 
-        $this->container->add(\Aura\Session\Segment::class, function(ContainerInterface $container){
-            $session = $container->get(\Aura\Session\Session::class);
+        $this->container->add(\Aura\Session\Segment::class, function(){
+            $session = $this->container->get(\Aura\Session\Session::class);
             return $session->getSegment('Carbontwelve\AzureDns');
         });
     }

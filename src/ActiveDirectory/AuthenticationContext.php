@@ -29,17 +29,41 @@ class AuthenticationContext
      */
     public function isAuthenticated()
     {
+        if (!session('token')) {
+            return false;
+        }
 
+        return true;
     }
 
     public function authenticate()
     {
+        if (empty($_GET['state']) || ($_GET['state'] !== session('oauth2state'))) {
+            echo session('oauth2state') . " does not equal " . $_GET['state'];
+            session()->clear();
+            exit();
+        }
 
+        $token = $this->provider->getAccessToken('authorization_code', [
+            'code' => $_GET['code'],
+            'resource' => 'https://management.azure.com/'
+        ]);
+
+        try {
+            $user = $this->provider->get("me", $token);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        session('user', $user);
+        session('token', $token->jsonSerialize());
+
+        return true;
     }
 
     public function getToken()
     {
-
+        return session('token')['access_token'];
     }
 
     /**
@@ -47,13 +71,18 @@ class AuthenticationContext
      */
     public function getUser()
     {
-        if (! $this->isAuthenticated()) {
+        if (!$this->isAuthenticated()) {
             return [];
         }
+
+        return session('user');
     }
 
+    /**
+     * @return Azure
+     */
     public function getProvider()
     {
-
+        return $this->provider;
     }
 }

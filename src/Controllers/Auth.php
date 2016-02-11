@@ -4,8 +4,9 @@ use Aura\Session\Segment;
 use Carbontwelve\AzureDns\ActiveDirectory\AuthenticationContext;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\Response\RedirectResponse;
 
-class Dashboard
+class Auth
 {
 
     /** @var  \Aura\Session\Segment */
@@ -17,15 +18,20 @@ class Dashboard
         $this->session = app(Segment::class);
     }
 
-    public function index(RequestInterface $request, ResponseInterface $response)
+    public function activeDirectory(RequestInterface $request, ResponseInterface $response)
     {
+        echo 'howdy'; exit();
+
 
         /** @var AuthenticationContext $authenticationContext */
         $authenticationContext = app(AuthenticationContext::class);
-        $subscriptions = $authenticationContext->getProvider()->get('subscriptions', $authenticationContext->getToken());
-        var_dump($subscriptions);
+        if ( ! $authenticationContext->authenticate() ) {
+            $response->getBody()->write('No allowed');
+            return $response->withStatus(403);
+        }
 
-        $response->getBody()->write('<h1>Hello World</h1>');
-        return $response;
+        echo 'howdy'; exit();
+
+        return new RedirectResponse('https://***REMOVED***/');
     }
 }

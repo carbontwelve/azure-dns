@@ -22,7 +22,7 @@ class AuthProvider extends AbstractServiceProvider
             return new AuthenticationContext([
                 'clientId' => getenv('APPSETTING_AD_CLIENT_ID'),
                 'clientSecret' => getenv('APPSETTING_AD_KEY'),
-                'redirectUri' => 'https://' . getenv('WEBSITE_HOSTNAME') . '/',
+                'redirectUri' => 'https://' . getenv('WEBSITE_HOSTNAME') . '/azure',
                 'tenant' => getenv('APPSETTING_AD_TENNANT'),
                 'urlAPI' => 'https://management.azure.com/'
             ]);

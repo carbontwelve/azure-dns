@@ -18,7 +18,7 @@ class AuthProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->getContainer()->add(AuthenticationContext::class, function(){
+        $this->container->add(AuthenticationContext::class, function(){
             return new AuthenticationContext([
                 'clientId' => getenv('APPSETTING_AD_CLIENT_ID'),
                 'clientSecret' => getenv('APPSETTING_AD_KEY'),

@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = new \Carbontwelve\AzureDns\App();
+$app->getContainer()->addServiceProvider(\Carbontwelve\AzureDns\Providers\AuthProvider::class);
 
 $app->addRequestMiddleware( function(){
     header('Location: ' . 'http://www.google.co.uk');

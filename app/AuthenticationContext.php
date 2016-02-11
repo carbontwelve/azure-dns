@@ -1,4 +1,4 @@
-<?php namespace Carbontwelve\AzureDns\ActiveDirectory;
+<?php namespace App;
 
 use TheNetworg\OAuth2\Client\Provider\Azure;
 

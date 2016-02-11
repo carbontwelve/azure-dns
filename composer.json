@@ -17,17 +17,21 @@
   "require": {
     "php": ">=5.5.9",
     "thenetworg/oauth2-azure": "^1.0",
-    "vlucas/phpdotenv": "^2.2",
-    "protonphp/proton": "^1.4",
-    "zendframework/zend-diactoros": "^1.3",
-    "aura/session": "^2.0"
+    "laravel/lumen-framework": "5.2.*",
+    "vlucas/phpdotenv": "~2.2",
+    "irazasyed/larasupport": "~1.0"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "phpunit/phpunit": "~4.0"
   },
   "autoload": {
     "psr-4": {
-      "Carbontwelve\\AzureDns\\": "src/"
+
+      "App\\": "app/"
     },
     "files": [
-      "src/Helpers.php"
+      "app/Helpers.php"
     ]
   },
   "minimum-stability": "dev"

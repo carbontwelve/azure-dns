@@ -11,6 +11,5 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->version();
-});
+$app->get('/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+$app->get('/azure', ['as' => 'azure', 'uses' => 'AuthController@activeDirectory']);

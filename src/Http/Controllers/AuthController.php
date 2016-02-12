@@ -32,7 +32,7 @@ class AuthController extends BaseController
         }
 
         return $response
-            ->withStatus(302)
+            ->withStatus(301)
             ->withHeader('Location', $location);
     }
 }

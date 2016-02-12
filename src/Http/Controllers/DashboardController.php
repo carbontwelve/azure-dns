@@ -4,13 +4,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use Psr\Http\Message\ResponseInterface;
 
-class DashboardController
+class DashboardController extends BaseController
 {
-
     /**
      * @var Azure
      */
     private $azure;
+
     /**
      * @var string
      */

@@ -1,8 +1,8 @@
 <?php
 // Routes
 
-$app->get('/', 'AzureDns\Http\Controllers\DashboardController:index');
-$app->get('/azure', 'AzureDns\Http\Controllers\AuthController:authenticate');
+$app->get('/', 'AzureDns\Http\Controllers\DashboardController:index')->setName('home');
+$app->get('/azure', 'AzureDns\Http\Controllers\AuthController:authenticate')->setName('azure');
 
 /*
 $app->get('/', function ($request, $response, $args) {

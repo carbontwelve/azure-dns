@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class AuthController
+class AuthController extends BaseController
 {
 
     /**
@@ -21,6 +21,9 @@ class AuthController
         if (!$this->authenticationContext->authenticate()) {
             return 'There was an issue with active directory authentication!';
         }
-        return 'Howdy Hurrah!';
+
+        return $response
+            ->withStatus(302)
+            ->withHeader('Location', $this->container->get('router')->pathFor('home') );
     }
 }

@@ -31,15 +31,18 @@ class AzureActiveDirectoryAuthentication
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
+        // If not authenticated
         if (!$this->authenticationContext->isAuthenticated() && (empty($_GET['state']) || ($_GET['state'] !== $this->session->get('oauth2state'))))
         {
             $location = $this->authenticationContext->getProvider()->getAuthorizationUrl();
             $this->session->set('oauth2state', $this->authenticationContext->getProvider()->getState());
+            $this->session->set('intendedBeforeRedirect', (string) $request->getUri());
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $location);
         }
 
+        // If authenticated
         return $next($request, $response);
     }
 

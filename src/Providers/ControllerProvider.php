@@ -1,6 +1,7 @@
 <?php namespace AzureDns\Providers;
 
 use AzureDns\Http\Controllers\AuthController;
+use AzureDns\Http\Controllers\ConfigurationController;
 use AzureDns\Http\Controllers\DashboardController;
 use Interop\Container\ContainerInterface;
 use Pimple\ServiceProviderInterface;
@@ -45,7 +46,14 @@ class ControllerProvider implements ServiceProviderInterface
         );
 
         $this->controllers['AzureDns\Http\Controllers\AuthController'] = new AuthController(
-            $pimple[\AzureDns\AuthenticationContext::class]
+            $pimple[\AzureDns\AuthenticationContext::class],
+            $pimple[\Aura\Session\Segment::class]
+        );
+
+        $this->controllers['AzureDns\Http\Controllers\ConfigurationController'] = new ConfigurationController(
+            $pimple[\Aura\Session\Segment::class],
+            $authContext->getProvider(),
+            $authContext->getToken()
         );
     }
 }

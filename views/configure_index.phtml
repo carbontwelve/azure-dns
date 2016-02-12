@@ -1,0 +1,32 @@
+<?php include('_partials/_header.phtml'); ?>
+<nav class="clearfix white bg-black">
+    <div class="sm-col">
+        <a href="<?php echo $router->pathFor('home') ?>" class="btn py2">Zones</a>
+    </div>
+    <div class="sm-col-right">
+        <a href="<?php echo $router->pathFor('configure') ?>" class="btn py2">Configure</a>
+    </div>
+</nav>
+
+<section class="container px2 py3">
+    <h1 class="mt0">Configuration</h1>
+
+
+    <p>
+        <strong>Subscription:</strong><br>
+        <a href="<?php echo $router->pathFor('configureSubscription') ?>">
+            <?php echo (is_null($configuration['subscription'])) ? 'none set' : $configuration['subscription'] ?>
+        </a>
+    </p>
+
+    <?php if (!is_null($configuration['subscription'])){ ?>
+    <p>
+        <strong> Group:</strong><br>
+        <a href="<?php echo $router->pathFor('configureGroup') ?>">
+            <?php echo (is_null($configuration['group'])) ? 'none set' : $configuration['group'] ?>
+        </a>
+    </p>
+    <?php } ?>
+</section>
+
+<?php include('_partials/_footer.phtml'); ?>

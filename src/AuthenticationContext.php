@@ -38,6 +38,20 @@ class AuthenticationContext
             return false;
         }
 
+        // Check token is not expired
+        $token = $this->session->get('token');
+
+        if (!isset($token['expires'])) {
+            return false;
+        }
+
+        $expires = $token['expires'];
+        $now = date('U');
+
+        if ( ( $expires - $now ) < 0 ) {
+            return false;
+        }
+
         return true;
     }
 

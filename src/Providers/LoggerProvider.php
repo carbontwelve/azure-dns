@@ -1,14 +1,11 @@
 <?php namespace AzureDns\Providers;
 
 use Interop\Container\ContainerInterface;
-use Aura\Session\SessionFactory;
 use Pimple\ServiceProviderInterface;
 use Slim\Views\PhpRenderer;
-use Aura\Session\Segment;
-use Aura\Session\Session;
 use Pimple\Container;
 
-class SessionProvider implements ServiceProviderInterface
+class LoggerProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given container.
@@ -21,9 +18,10 @@ class SessionProvider implements ServiceProviderInterface
      */
     public function register(Container $pimple)
     {
-        $sessionFactory = new SessionFactory();
-        $session = $sessionFactory->newInstance($_COOKIE);
-        $pimple[Session::class] = $session;
-        $pimple[Segment::class] = $session->getSegment('AzureDns');
+        $settings = $pimple->get('settings')['logger'];
+        $logger = new \Monolog\Logger($settings['name']);
+        $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], \Monolog\Logger::DEBUG));
+        $pimple['logger'] = $logger;
     }
 }

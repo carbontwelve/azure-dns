@@ -1,31 +1,31 @@
-<?php namespace Carbontwelve\AzureDns\Providers;
+<?php namespace AzureDns\Providers;
 
-use Carbontwelve\AzureDns\ActiveDirectory\AuthenticationContext;
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use Interop\Container\ContainerInterface;
+use AzureDns\AuthenticationContext;
+use Pimple\ServiceProviderInterface;
+use Slim\Views\PhpRenderer;
+use Aura\Session\Segment;
+use Pimple\Container;
 
-class AuthProvider extends AbstractServiceProvider
+class AuthProvider implements ServiceProviderInterface
 {
     /**
-     * @var array
+     * Registers services on the given container.
+     *
+     * This method should only be used to configure services and parameters.
+     * It should not get services.
+     *
+     * @param Container|ContainerInterface $pimple A container instance
+     * @return PhpRenderer
      */
-    protected $provides = [
-        AuthenticationContext::class
-    ];
-
-    /**
-     * Register the Authentication Context for Active Directory authentication
-     * @return void
-     */
-    public function register()
+    public function register(Container $pimple)
     {
-        $this->container->add(AuthenticationContext::class, function(){
-            return new AuthenticationContext([
-                'clientId' => getenv('APPSETTING_AD_CLIENT_ID'),
-                'clientSecret' => getenv('APPSETTING_AD_KEY'),
-                'redirectUri' => 'https://' . getenv('WEBSITE_HOSTNAME') . '/azure',
-                'tenant' => getenv('APPSETTING_AD_TENNANT'),
-                'urlAPI' => 'https://management.azure.com/'
-            ]);
-        });
+        $pimple[AuthenticationContext::class] = new AuthenticationContext([
+            'clientId' => getenv('APPSETTING_AD_CLIENT_ID'),
+            'clientSecret' => getenv('APPSETTING_AD_KEY'),
+            'redirectUri' => 'https://' . getenv('WEBSITE_HOSTNAME') . '/azure',
+            'tenant' => getenv('APPSETTING_AD_TENNANT'),
+            'urlAPI' => 'https://management.azure.com/'
+        ], $pimple[Segment::class]);
     }
 }

@@ -14,6 +14,7 @@ $container->register(new \AzureDns\Providers\SessionProvider());
 $container->register(new \AzureDns\Providers\AuthProvider());
 $container->register(new \AzureDns\Providers\ViewProvider());
 $container->register(new \AzureDns\Providers\LoggerProvider());
+$container->register(new \AzureDns\Providers\DNSApiProvider());
 $container->register(new \AzureDns\Providers\ControllerProvider());
 
 // Instantiate the app

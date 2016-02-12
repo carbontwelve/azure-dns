@@ -1,5 +1,6 @@
 <?php namespace AzureDns\Http\Controllers;
 
+use AzureDns\DNSApi;
 use Psr\Http\Message\ServerRequestInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use Psr\Http\Message\ResponseInterface;
@@ -7,53 +8,34 @@ use Psr\Http\Message\ResponseInterface;
 class DashboardController extends BaseController
 {
     /**
-     * @var Azure
+     * @var \Aura\Session\Segment
      */
-    private $azure;
-
+    private $session;
     /**
-     * @var string
+     * @var DNSApi
      */
-    private $token;
+    private $api;
 
-    public function __construct(Azure $azure, $token)
+    public function __construct(\Aura\Session\Segment $session, DNSApi $api)
     {
-        $this->azure = $azure;
-        $this->token = $token;
+        $this->session = $session;
+        $this->api = $api;
     }
 
     public function index (ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
 
-        return $this->view('index.phtml', $response);
+        //$zones = $this->api->getRecordSetsList('***REMOVED***');
 
-        // 1. identify the subscription
-        $subscriptions = $this->azure->get('subscriptions', $this->token);
-
-        // 2. Identify the resource group
-        $groups = $this->azure->get('subscriptions/{subscription}/resourceGroups', $this->token);
+        return $this->view('index.phtml', $response, [
+            'zones' => $this->api->getZonesList()
+        ]);
 
         // 3. Identify the DNS Zone
-        $zones = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones', $this->token);
+
 
         // 4. Identify record sets for DNS Zone
-        $recordSets = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets', $this->token);
+        //$recordSets = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets', $this->token);
     }
 
-    public function configure(ServerRequestInterface $request, ResponseInterface $response, array $args)
-    {
-        /** @var \Aura\Session\Segment $session */
-        $session = $this->container->get(\Aura\Session\Segment::class);
-
-        if (! $configuration = $session->get('configuration')) {
-            $configuration = [
-                'subscription' => null,
-                'group' => null,
-            ];
-        }
-
-        return $this->view('configure.phtml', $response, [
-            'configuration' => $configuration
-        ]);
-    }
 }

@@ -41,8 +41,8 @@ class ControllerProvider implements ServiceProviderInterface
         $authContext = $pimple[\AzureDns\AuthenticationContext::class];
 
         $this->controllers['AzureDns\Http\Controllers\DashboardController'] = new DashboardController(
-            $authContext->getProvider(),
-            $authContext->getToken()
+            $pimple[\Aura\Session\Segment::class],
+            $pimple[\AzureDns\DNSApi::class]
         );
 
         $this->controllers['AzureDns\Http\Controllers\AuthController'] = new AuthController(
@@ -52,8 +52,7 @@ class ControllerProvider implements ServiceProviderInterface
 
         $this->controllers['AzureDns\Http\Controllers\ConfigurationController'] = new ConfigurationController(
             $pimple[\Aura\Session\Segment::class],
-            $authContext->getProvider(),
-            $authContext->getToken()
+            $pimple[\AzureDns\DNSApi::class]
         );
     }
 }

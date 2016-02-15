@@ -11,6 +11,9 @@ $app->get('/zone/create', 'AzureDns\Http\Controllers\ZoneController:create')
 $app->post('/zone/create', 'AzureDns\Http\Controllers\ZoneController:store')
     ->setName('storeZone');
 
+$app->get('/zone/{zone}/destroy', 'AzureDns\Http\Controllers\ZoneController:destroy')
+    ->setName('destroyZone');
+
 //
 // DNS Record Set Management Routes
 //

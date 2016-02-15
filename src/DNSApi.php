@@ -135,6 +135,22 @@ class DNSApi
         );
     }
 
+    public function deleteZone($zone)
+    {
+
+        $this->azure->API_VERSION = '2015-05-04-preview';
+
+        $path = $this->buildAPIPath(
+            'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}',
+            ['zone' => $zone]
+        );
+        $data = $this->azure->delete($path, $this->token);
+        $this->throwOnAPIError($data);
+
+        // We would have an exception thrown before here if there was an error deleting the zone
+        return true;
+    }
+
     /**
      * Get a list of record sets that are attached to the named $zone
      * @param string $zone

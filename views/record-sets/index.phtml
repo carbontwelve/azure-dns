@@ -20,13 +20,17 @@
 
     <?php foreach ($records as $name => $set) { ?>
 
-        <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
+        <div class="clearfix mb0" style="padding: 10px 0;">
             <h3 style="border-bottom: 1px solid;"><?php echo $name; ?></h3>
             <?php foreach ($set as $dnsEntry) { ?>
                 <?php include(templatePath('record-sets/_partials/_' . $name . '.phtml')); ?>
             <?php } ?>
         </div>
     <?php } ?>
+
+    <div class="clearfix mt1 mb4">
+        <a href="<?php echo $router->pathFor('destroyZone', ['zone' => $zone]) ?>" class="btn btn-primary bg-red right ml1">Delete Zone</a>
+    </div>
 </div>
 
 <?php include(templatePath('_partials/_footer.phtml')); ?>

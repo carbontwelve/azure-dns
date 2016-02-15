@@ -9,7 +9,8 @@
           class="p2 clearfix">
 
         <input type="hidden" name="meta[etag]" value="<?php echo $dnsEntry['etag']; ?>"/>
-        <input type="hidden" name="meta[type]" value="NS"/>
+        <input type="hidden" name="meta[type]" value="NSRecords"/>
+        <input type="hidden" name="meta[TTL]" value="<?php echo $dnsEntry['properties']['TTL']; ?>" />
         <input type="hidden" name="meta[recordSetName]" value="<?php echo $dnsEntry['name']; ?>"/>
 
         <div class="clearfix mb1">
@@ -18,17 +19,18 @@
                    value="<?php echo((!is_null($old_input['name'])) ? $old_input['name'] : $dnsEntry['name']); ?>"/>
         </div>
 
-        <?php foreach ($dnsEntry['properties']['NSRecords'] as $nsRecord) { ?>
+        <?php foreach ($dnsEntry['properties']['NSRecords'] as $recordNumber => $nsRecord) { ?>
             <?php foreach ($nsRecord as $key => $value) { ?>
+                <?php $inputName = 'NSRecords['. $recordNumber .']['.$key.']'; ?>
                 <div class="clearfix mb1">
-                    <label class="col block col-2 right-align p1" for="<?php echo $key; ?>"><?php echo $key; ?></label>
-                    <input class="col col-10" name="<?php echo $key; ?>"
-                           value="<?php echo((!is_null($old_input[$key])) ? $old_input[$key] : $value); ?>"/>
+                    <label class="col block col-2 right-align p1" for="<?php echo $inputName; ?>"><?php echo $key; ?></label>
+                    <input class="col col-10" name="<?php echo $inputName; ?>"
+                           value="<?php echo((!is_null($old_input[$inputName])) ? $old_input[$inputName] : $value); ?>"/>
                 </div>
             <?php }
             unset($key, $value); ?>
         <?php }
-        unset($nsRecord); ?>
-        <button type="submit" class="btn btn-primary right">Update</button>
+        unset($nsRecord, $recordNumber, $inputName); ?>
+        <button type="submit" class="btn btn-primary right mt1">Update</button>
     </form>
 </div>

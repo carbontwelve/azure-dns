@@ -9,7 +9,8 @@
           class="p2 clearfix">
 
         <input type="hidden" name="meta[etag]" value="<?php echo $dnsEntry['etag']; ?>"/>
-        <input type="hidden" name="meta[type]" value="MX"/>
+        <input type="hidden" name="meta[type]" value="MXRecords"/>
+        <input type="hidden" name="meta[TTL]" value="<?php echo $dnsEntry['properties']['TTL']; ?>" />
         <input type="hidden" name="meta[recordSetName]" value="<?php echo $dnsEntry['name']; ?>"/>
 
         <div class="clearfix mb1">
@@ -20,7 +21,7 @@
 
         <?php foreach ($dnsEntry['properties']['MXRecords'] as $recordNumber => $mxRecord) { ?>
             <?php foreach ($mxRecord as $key => $value) { ?>
-                <?php $inputName = $recordNumber . '['. $key .']'; ?>
+                <?php $inputName = 'MXRecords['. $recordNumber .']['.$key.']'; ?>
                 <div class="clearfix mb1">
                     <label class="col block col-2 right-align p1" for="<?php echo $inputName; ?>"><?php echo $key; ?></label>
                     <input class="col col-10" name="<?php echo $inputName; ?>"
@@ -29,7 +30,7 @@
             <?php }
             unset($key, $value); ?>
         <?php }
-        unset($mxRecord, $recordNumber); ?>
-        <button type="submit" class="btn btn-primary right">Update</button>
+        unset($mxRecord, $recordNumber, $inputName); ?>
+        <button type="submit" class="btn btn-primary right mt1">Update</button>
     </form>
 </div>

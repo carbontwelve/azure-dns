@@ -49,7 +49,20 @@ class RecordSetController extends BaseController
     public function update(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         $input = $request->getParsedBody();
-        dd($input);
+
+        $output = [
+            'location' => 'global',
+            'tags' => [],
+            'properties' => [
+                "TTL" => $input['meta']['TTL']
+            ]
+        ];
+
+        $output['properties'][$input['meta']['type']] = $input[$input['meta']['type']];
+
+        header('Content-Type: text/plain');
+        echo json_encode($output);
+        die();
     }
 
     public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)

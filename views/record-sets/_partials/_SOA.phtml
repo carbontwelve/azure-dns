@@ -9,7 +9,8 @@
           class="p2 clearfix">
 
         <input type="hidden" name="meta[etag]" value="<?php echo $dnsEntry['etag']; ?>" />
-        <input type="hidden" name="meta[type]" value="SOA" />
+        <input type="hidden" name="meta[type]" value="SOARecord" />
+        <input type="hidden" name="meta[TTL]" value="<?php echo $dnsEntry['properties']['TTL']; ?>" />
         <input type="hidden" name="meta[recordSetName]" value="<?php echo $dnsEntry['name']; ?>" />
 
         <div class="clearfix mb1">
@@ -19,13 +20,14 @@
         </div>
 
         <?php foreach ($dnsEntry['properties']['SOARecord'] as $key => $value) { ?>
+            <?php $inputName = 'SOARecord['.$key.']'; ?>
             <div class="clearfix mb1">
-                <label class="col block col-2 right-align p1" for="<?php echo $key; ?>"><?php echo $key; ?></label>
-                <input class="col col-10" name="<?php echo $key; ?>"
-                       value="<?php echo((!is_null($old_input[$key])) ? $old_input[$key] : $value); ?>"/>
+                <label class="col block col-2 right-align p1" for="<?php echo $inputName; ?>"><?php echo $key; ?></label>
+                <input class="col col-10" name="<?php echo $inputName; ?>"
+                       value="<?php echo((!is_null($old_input[$inputName])) ? $old_input[$inputName] : $value); ?>"/>
             </div>
         <?php }
-        unset($key, $value); ?>
-        <button type="submit" class="btn btn-primary right">Update</button>
+        unset($key, $value, $inputName); ?>
+        <button type="submit" class="btn btn-primary right mt1">Update</button>
     </form>
 </div>

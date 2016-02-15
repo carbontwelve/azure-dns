@@ -2,33 +2,31 @@
 
 <div class="container">
 
-    <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
+    <div class="clearfix mb0" style="padding: 10px 0;">
         <div class="left">
-            <h2 style="margin: 0;line-height: normal;">Zone Record Sets for <em><?php echo $zone; ?></em> <small class="olive" style="font-size: 1rem"><?php echo count($records); ?> records </small></h2>
+            <h2 style="margin: 0;line-height: normal;">Zone Record Sets for <em><?php echo $zone; ?></em>
+                <small class="olive" style="font-size: 1rem"><?php echo count($records); ?> records</small>
+            </h2>
         </div>
 
         <div class="right">
-            <a href="<?php echo $router->pathFor('createZone') ?>" class="btn btn-primary bg-olive left ml1">Add Record</a>
+            <a href="<?php echo $router->pathFor('createZone') ?>" class="btn btn-primary bg-olive left ml1">Add
+                Record</a>
             <a href="<?php echo $router->pathFor('zoneIndex') ?>" class="btn btn-primary bg-gray left ml1">Back</a>
         </div>
     </div>
 
     <?php include(templatePath('_partials/_notifications.phtml')); ?>
 
-    <?php foreach($records as $name => $set) { ?>
+    <?php foreach ($records as $name => $set) { ?>
 
-    <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
-        <h3 style="border-bottom: 1px solid;"><?php echo $name; ?></h3>
-        <?php foreach ($set as $dnsEntry) { ?>
-            <?php include(templatePath('record-sets/_partials/_' . $name . '.phtml')); ?>
-        <?php } ?>
-        <pre><?php var_dump($set); ?></pre>
-    </div>
-
+        <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
+            <h3 style="border-bottom: 1px solid;"><?php echo $name; ?></h3>
+            <?php foreach ($set as $dnsEntry) { ?>
+                <?php include(templatePath('record-sets/_partials/_' . $name . '.phtml')); ?>
+            <?php } ?>
+        </div>
     <?php } ?>
-
-
-
 </div>
 
 <?php include(templatePath('_partials/_footer.phtml')); ?>

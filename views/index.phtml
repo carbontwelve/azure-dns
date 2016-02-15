@@ -1,7 +1,41 @@
 <?php include('_partials/_header.phtml'); ?>
 
-    <div class="container">
-        <pre><?php var_dump($zones); ?></pre>
+<div class="container">
+
+    <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
+        <div class="left">
+            <h2 style="margin: 0;line-height: normal;">Zone List <small class="olive" style="font-size: 1rem"><?php echo count($zones); ?> records </small></h2>
+        </div>
+
+        <div class="right">
+            <a href="<?php echo $router->pathFor('createZone') ?>" class="btn btn-primary bg-olive left ml1">Add Zone</a>
+        </div>
     </div>
+
+    <?php if (count($zones) > 0){ ?>
+    <table class="table-light">
+        <thead>
+        <tr>
+            <th class="left-align p0 py1">Zone Name</th>
+            <th class="col-1 p0 py1">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($zones as $zone) { ?>
+            <tr>
+                <td class="align-middle left-align p0 py1">
+                    <?php echo $zone['name']; ?>
+                </td>
+                <td class="align-middle right-align p0 py1">
+                    <a href="<?php echo $router->pathFor('viewZoneRecordSets', ['zone' => $zone['name']]) ?>" class="btn btn-primary bg-blue">Records</a>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php }else{ ?>
+    <p>You have no zones set up for this resource group.</p>
+    <?php } ?>
+</div>
 
 <?php include('_partials/_footer.phtml'); ?>

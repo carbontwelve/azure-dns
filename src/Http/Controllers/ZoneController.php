@@ -4,7 +4,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use AzureDns\DNSApi;
 
-class DashboardController extends BaseController
+class ZoneController extends BaseController
 {
     /**
      * @var \Aura\Session\Segment
@@ -21,7 +21,7 @@ class DashboardController extends BaseController
         $this->api = $api;
     }
 
-    public function index (ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Redirect to configuration if not yet configured
         if (!$this->api->configurationIsValid()) {
@@ -38,8 +38,8 @@ class DashboardController extends BaseController
         //$recordSets = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets', $this->token);
     }
 
-    public function recordSets(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function create()
     {
-        dd($args);
+
     }
 }

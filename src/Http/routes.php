@@ -1,15 +1,38 @@
 <?php
-// Routes
+//
+// DNS Zone Management Routes
+//
+$app->get('/', 'AzureDns\Http\Controllers\ZoneController:index')
+    ->setName('zoneIndex');
 
-$app->get('/', 'AzureDns\Http\Controllers\DashboardController:index')
-    ->setName('home');
+$app->get('/zone/create', 'AzureDns\Http\Controllers\ZoneController:create')
+    ->setName('createZone');
 
-$app->get('/zone/{zone}/record-sets', 'AzureDns\Http\Controllers\DashboardController:recordSets')
-    ->setName('zoneRecordSets');
+$app->post('/zone/create', 'AzureDns\Http\Controllers\ZoneController:store')
+    ->setName('storeZone');
 
+//
+// DNS Record Set Management Routes
+//
+
+$app->get('/zone/{zone}/record-sets', 'AzureDns\Http\Controllers\RecordSetController:index')
+    ->setName('viewZoneRecordSets');
+
+$app->get('/zone/{zone}/record-sets/create', 'AzureDns\Http\Controllers\RecordSetController:create')
+    ->setName('createZoneRecordSets');
+
+$app->post('/zone/{zone}/record-sets/create', 'AzureDns\Http\Controllers\RecordSetController:store')
+    ->setName('storeZoneRecordSets');
+
+//
+// Active Directory Auth Routes
+//
 $app->get('/azure', 'AzureDns\Http\Controllers\AuthController:authenticate')
     ->setName('azure');
 
+//
+// Configuration Routes
+//
 $app->get('/configure', 'AzureDns\Http\Controllers\ConfigurationController:index')
     ->setName('configure');
 
@@ -24,13 +47,3 @@ $app->get('/configure/group', 'AzureDns\Http\Controllers\ConfigurationController
 
 $app->post('/configure/group', 'AzureDns\Http\Controllers\ConfigurationController:postConfigureGroup')
     ->setName('saveConfigureGroup');
-
-/*
-$app->get('/', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
-*/

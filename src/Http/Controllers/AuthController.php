@@ -28,7 +28,7 @@ class AuthController extends BaseController
         }
 
         if (!$location = $this->session->get('intendedBeforeRedirect')) {
-            $location = $this->container->get('router')->pathFor('home');
+            $location = $this->container->get('router')->pathFor('zoneIndex');
         }
 
         return $response

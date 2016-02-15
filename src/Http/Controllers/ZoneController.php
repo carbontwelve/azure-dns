@@ -30,16 +30,34 @@ class ZoneController extends BaseController
                 ->withHeader('Location', $this->container->get('router')->pathFor('configure'));
         }
 
-        return $this->view('index.phtml', $response, [
+        return $this->view('zones\index.phtml', $response, [
             'zones' => $this->api->getZonesList()
         ]);
-
-        // 4. Identify record sets for DNS Zone
-        //$recordSets = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets', $this->token);
     }
 
-    public function create()
+    public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        return $this->view('zones\create.phtml', $response, []);
+    }
 
+    public function store(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        $input = $request->getParsedBody();
+
+        if (!isset($input['zone']) || empty($input['zone'])) {
+
+            $this->session->setFlash('error', 'Zone name must be a non-empty string.');
+            $this->session->setFlash('old', $input);
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->container->get('router')->pathFor('createZone'));
+        }
+
+        // Attempt to add zone
+
+        $data = $this->api->createZone($input['zone']);
+
+        dd($data);
     }
 }

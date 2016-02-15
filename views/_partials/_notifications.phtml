@@ -1,0 +1,11 @@
+<?php if ($error = $message_bag['error']) { ?>
+    <div class="bold center p2 mb1 mt1 white bg-red">
+        <?php echo $error; ?>
+    </div>
+<?php } ?>
+
+<?php if ($success = $message_bag['success']) { ?>
+    <div class="bold center p2 mb1 mt1 white bg-green">
+        <?php echo $success; ?>
+    </div>
+<?php } ?>

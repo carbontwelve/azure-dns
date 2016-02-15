@@ -1,0 +1,28 @@
+<?php include(templatePath('_partials/_header.phtml')); ?>
+
+<div class="container">
+
+    <div class="clearfix mb0" style="padding: 10px 0; border-bottom: #999 2px solid">
+        <div class="left">
+            <h2 style="margin: 0;line-height: normal;">Create new zone</h2>
+        </div>
+
+        <div class="right">
+            <a href="<?php echo $router->pathFor('zoneIndex') ?>" class="btn btn-primary bg-olive left ml1">Back</a>
+        </div>
+    </div>
+
+    <div class="clearfix">
+
+        <?php include(templatePath('_partials/_notifications.phtml')); ?>
+
+        <form action="<?php echo $router->pathFor('storeZone') ?>" method="post" class="py2">
+            <label for="zone" class="hide">Zone</label>
+            <input name="zone" value="<?php echo ( (!is_null($old_input['zone'])) ? $old_input['zone'] : '' ); ?>" placeholder="example.com" class="col col-11 field rounded-left x-group-item">
+            <button type="submit" class="col col-1 btn btn-primary rounded-right">Save</button>
+        </form>
+    </div>
+
+</div>
+
+<?php include(templatePath('_partials/_footer.phtml')); ?>

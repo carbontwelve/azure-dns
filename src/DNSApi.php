@@ -119,6 +119,22 @@ class DNSApi
             [], '2015-05-04-preview');
     }
 
+    public function createZone($zone)
+    {
+        return $this->putToAPI(
+            'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}',
+            [
+                'zone' => $zone
+            ],
+            [
+                'location' => 'global',
+                'tags' => new \stdClass(),
+                'properties' => new \stdClass()
+            ],
+            '2015-05-04-preview'
+        );
+    }
+
     /**
      * Get a list of record sets that are attached to the named $zone
      * @param string $zone
@@ -131,8 +147,11 @@ class DNSApi
             throw new \Exception('The zone name must be a non zero length string.');
         }
 
-        return $this->getFromAPI('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets',
-            ['zone' => $zone], '2015-05-04-preview');
+        return $this->getFromAPI(
+            'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets',
+            ['zone' => $zone],
+            '2015-05-04-preview'
+        );
     }
 
     /**
@@ -148,6 +167,35 @@ class DNSApi
             $this->azure->API_VERSION = $version;
         }
 
+        $path = $this->buildAPIPath($path, $attr);
+        $data = $this->azure->get($path, $this->token);
+        $this->throwOnAPIError($data);
+
+        return $data;
+    }
+
+    private function putToAPI($path, array $attr = [], $body, $version = null)
+    {
+        if (!is_null($version)) {
+            $this->azure->API_VERSION = $version;
+        }
+
+        $path = $this->buildAPIPath($path, $attr);
+        $data = $this->azure->put($path, json_encode($body), $this->token);
+        $this->throwOnAPIError($data);
+
+        return $data;
+    }
+
+    /**
+     * Build the path from an input template string and attributes
+     *
+     * @param $path
+     * @param array $attr
+     * @return mixed
+     */
+    private function buildAPIPath($path, array $attr = [])
+    {
         if (!isset($attr['subscription'])) {
             $attr['subscription'] = $this->configuration['subscription'];
         }
@@ -161,8 +209,11 @@ class DNSApi
         }
         unset($key, $value);
 
-        $data = $this->azure->get($path, $this->token);
+        return $path;
+    }
 
+    private function throwOnAPIError($data)
+    {
         if (is_array($data) && isset($data['error'])) {
             $exceptionClassName = '\\AzureDns\\Exceptions\\' . $data['error']['code'] . 'Exception';
             $exceptionMessage = $data['error']['code'] . ': ' . $data['error']['message'];
@@ -175,6 +226,5 @@ class DNSApi
 
             throw $exception;
         }
-        return $data;
     }
 }

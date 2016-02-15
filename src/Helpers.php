@@ -15,3 +15,16 @@ if (!function_exists('dd')) {
         die;
     }
 }
+
+if (!function_exists('templatePath')) {
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    function templatePath($name)
+    {
+        return APP_BASE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $name;
+    }
+
+}

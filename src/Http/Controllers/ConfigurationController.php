@@ -24,14 +24,14 @@ class ConfigurationController extends BaseController
 
     public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        return $this->view('configure_index.phtml', $response, [
+        return $this->view('configuration/index.phtml', $response, [
             'configuration' => $this->api->getConfiguration()
         ]);
     }
 
     public function getConfigureSubscription(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        return $this->view('configure_set.phtml', $response, [
+        return $this->view('configuration/set.phtml', $response, [
             'name' => 'Subscription',
             'data' => $this->api->getSubscriptionsList()
         ]);
@@ -49,7 +49,7 @@ class ConfigurationController extends BaseController
 
     public function getConfigureGroup(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        return $this->view('configure_set.phtml', $response, [
+        return $this->view('configuration/set.phtml', $response, [
             'name' => 'Group',
             'data' => $this->api->getGroupsList()
         ]);

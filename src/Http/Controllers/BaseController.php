@@ -26,7 +26,6 @@ class BaseController
 
     protected function view($view, ResponseInterface $response, array $args = [])
     {
-
         $args['router'] = $this->container->get('router');
 
         /** @var \Slim\Views\PhpRenderer $renderer */

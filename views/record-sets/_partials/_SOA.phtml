@@ -1,0 +1,31 @@
+<div class="bg-gray black mb1">
+    <div class="silver bg-navy mb2 p2">
+        <h3 class="m0 p0" title="<?php echo $dnsEntry['id']; ?>">
+            <?php echo $dnsEntry['properties']['fqdn']; ?>
+        </h3>
+    </div>
+
+    <form action="<?php echo $router->pathFor('updateZoneRecordSets', ['zone' => $zone]) ?>" method="post"
+          class="p2 clearfix">
+
+        <input type="hidden" name="meta[etag]" value="<?php echo $dnsEntry['etag']; ?>" />
+        <input type="hidden" name="meta[type]" value="SOA" />
+        <input type="hidden" name="meta[recordSetName]" value="<?php echo $dnsEntry['name']; ?>" />
+
+        <div class="clearfix mb1">
+            <label class="col block col-2 right-align p1" for="name">Name</label>
+            <input class="col col-10" name="name"
+                   value="<?php echo((!is_null($old_input['name'])) ? $old_input['name'] : $dnsEntry['name']); ?>" readonly />
+        </div>
+
+        <?php foreach ($dnsEntry['properties']['SOARecord'] as $key => $value) { ?>
+            <div class="clearfix mb1">
+                <label class="col block col-2 right-align p1" for="<?php echo $key; ?>"><?php echo $key; ?></label>
+                <input class="col col-10" name="<?php echo $key; ?>"
+                       value="<?php echo((!is_null($old_input[$key])) ? $old_input[$key] : $value); ?>"/>
+            </div>
+        <?php }
+        unset($key, $value); ?>
+        <button type="submit" class="btn btn-primary right">Update</button>
+    </form>
+</div>

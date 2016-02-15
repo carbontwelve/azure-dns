@@ -147,11 +147,32 @@ class DNSApi
             throw new \Exception('The zone name must be a non zero length string.');
         }
 
-        return $this->getFromAPI(
+        $allowedTypes = ["A", "AAAA", "CNAME", "MX", "NS", "SRV", "TXT", "SOA"];
+        $output = [];
+        $data = $this->getFromAPI(
             'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets',
             ['zone' => $zone],
             '2015-05-04-preview'
         );
+
+        foreach($data as $record) {
+            $find = '/providers/Microsoft.Network/dnszones/'. $zone .'/';
+            $recordType = substr($record['id'], (strpos($record['id'], $find) + strlen($find)));
+            $recordType = explode('/', $recordType);
+            $recordType = array_shift($recordType);
+
+            if (! in_array($recordType, $allowedTypes)) {
+                throw new \Exception('The type ['. $recordType .'] is not one of: ' . implode(',', $allowedTypes));
+            }
+
+            if (! isset($output[$recordType])) {
+                $output[$recordType] = [];
+            }
+
+            array_push($output[$recordType], $record);
+        }unset($record, $data);
+
+        return $output;
     }
 
     /**
@@ -174,6 +195,14 @@ class DNSApi
         return $data;
     }
 
+    /**
+     * @param $path
+     * @param array $attr
+     * @param $body
+     * @param null $version
+     * @return null
+     * @throws \Exception
+     */
     private function putToAPI($path, array $attr = [], $body, $version = null)
     {
         if (!is_null($version)) {
@@ -212,6 +241,10 @@ class DNSApi
         return $path;
     }
 
+    /**
+     * @param $data
+     * @throws \Exception
+     */
     private function throwOnAPIError($data)
     {
         if (is_array($data) && isset($data['error'])) {

@@ -24,6 +24,9 @@ $app->get('/zone/{zone}/record-sets/create', 'AzureDns\Http\Controllers\RecordSe
 $app->post('/zone/{zone}/record-sets/create', 'AzureDns\Http\Controllers\RecordSetController:store')
     ->setName('storeZoneRecordSets');
 
+$app->post('/zone/{zone}/record-sets/update', 'AzureDns\Http\Controllers\RecordSetController:update')
+    ->setName('updateZoneRecordSets');
+
 //
 // Active Directory Auth Routes
 //

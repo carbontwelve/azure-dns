@@ -30,10 +30,9 @@ class RecordSetController extends BaseController
                 ->withHeader('Location', $this->container->get('router')->pathFor('configure'));
         }
 
-        dd ($args);
-
-        return $this->view('index.phtml', $response, [
-            'zones' => $this->api->getZonesList()
+        return $this->view('record-sets/index.phtml', $response, [
+            'zone' => $args['zone'],
+            'records' => $this->api->getRecordSetsList($args['zone'])
         ]);
     }
 
@@ -49,7 +48,8 @@ class RecordSetController extends BaseController
 
     public function update(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-
+        $input = $request->getParsedBody();
+        dd($input);
     }
 
     public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)

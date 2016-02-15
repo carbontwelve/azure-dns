@@ -55,9 +55,16 @@ class ZoneController extends BaseController
         }
 
         // Attempt to add zone
-
         $data = $this->api->createZone($input['zone']);
 
-        dd($data);
+        $this->session->setFlash('success', 'Zone "'. $data['name'] .'" successfully created.');
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->container->get('router')->pathFor('zoneIndex'));
+    }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+
     }
 }

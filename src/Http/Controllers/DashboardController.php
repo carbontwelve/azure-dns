@@ -23,7 +23,12 @@ class DashboardController extends BaseController
 
     public function index (ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        //$zones = $this->api->getRecordSetsList('***REMOVED***');
+        // Redirect to configuration if not yet configured
+        if (!$this->api->configurationIsValid()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->container->get('router')->pathFor('configure'));
+        }
 
         return $this->view('index.phtml', $response, [
             'zones' => $this->api->getZonesList()

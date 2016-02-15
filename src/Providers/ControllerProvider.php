@@ -37,9 +37,6 @@ class ControllerProvider implements ServiceProviderInterface
 
     private function identifyControllers(Container $pimple)
     {
-        /** @var \AzureDns\AuthenticationContext $authContext */
-        $authContext = $pimple[\AzureDns\AuthenticationContext::class];
-
         $this->controllers['AzureDns\Http\Controllers\DashboardController'] = new DashboardController(
             $pimple[\Aura\Session\Segment::class],
             $pimple[\AzureDns\DNSApi::class]

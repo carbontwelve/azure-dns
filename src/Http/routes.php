@@ -4,6 +4,9 @@
 $app->get('/', 'AzureDns\Http\Controllers\DashboardController:index')
     ->setName('home');
 
+$app->get('/zone/{zone}/record-sets', 'AzureDns\Http\Controllers\DashboardController:recordSets')
+    ->setName('zoneRecordSets');
+
 $app->get('/azure', 'AzureDns\Http\Controllers\AuthController:authenticate')
     ->setName('azure');
 

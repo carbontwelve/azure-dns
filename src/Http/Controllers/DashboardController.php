@@ -1,9 +1,8 @@
 <?php namespace AzureDns\Http\Controllers;
 
-use AzureDns\DNSApi;
 use Psr\Http\Message\ServerRequestInterface;
-use TheNetworg\OAuth2\Client\Provider\Azure;
 use Psr\Http\Message\ResponseInterface;
+use AzureDns\DNSApi;
 
 class DashboardController extends BaseController
 {
@@ -24,18 +23,18 @@ class DashboardController extends BaseController
 
     public function index (ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-
         //$zones = $this->api->getRecordSetsList('***REMOVED***');
 
         return $this->view('index.phtml', $response, [
             'zones' => $this->api->getZonesList()
         ]);
 
-        // 3. Identify the DNS Zone
-
-
         // 4. Identify record sets for DNS Zone
         //$recordSets = $this->azure->get('subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets', $this->token);
     }
 
+    public function recordSets(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        dd($args);
+    }
 }

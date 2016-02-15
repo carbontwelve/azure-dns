@@ -1,8 +1,9 @@
 <?php namespace AzureDns\Providers;
 
-use AzureDns\Http\Controllers\AuthController;
 use AzureDns\Http\Controllers\ConfigurationController;
-use AzureDns\Http\Controllers\DashboardController;
+use AzureDns\Http\Controllers\RecordSetController;
+use AzureDns\Http\Controllers\ZoneController;
+use AzureDns\Http\Controllers\AuthController;
 use Interop\Container\ContainerInterface;
 use Pimple\ServiceProviderInterface;
 use Slim\Views\PhpRenderer;
@@ -37,7 +38,12 @@ class ControllerProvider implements ServiceProviderInterface
 
     private function identifyControllers(Container $pimple)
     {
-        $this->controllers['AzureDns\Http\Controllers\DashboardController'] = new DashboardController(
+        $this->controllers['AzureDns\Http\Controllers\ZoneController'] = new ZoneController(
+            $pimple[\Aura\Session\Segment::class],
+            $pimple[\AzureDns\DNSApi::class]
+        );
+
+        $this->controllers['AzureDns\Http\Controllers\RecordSetController'] = new RecordSetController(
             $pimple[\Aura\Session\Segment::class],
             $pimple[\AzureDns\DNSApi::class]
         );

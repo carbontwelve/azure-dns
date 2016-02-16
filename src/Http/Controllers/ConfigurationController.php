@@ -1,12 +1,13 @@
-<?php namespace AzureDns\Http\Controllers;
+<?php
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+namespace AzureDns\Http\Controllers;
+
 use AzureDns\DNSApi;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ConfigurationController extends BaseController
 {
-
     /**
      * @var \Aura\Session\Segment
      */
@@ -25,7 +26,7 @@ class ConfigurationController extends BaseController
     public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         return $this->view('configuration/index.phtml', $response, [
-            'configuration' => $this->api->getConfiguration()
+            'configuration' => $this->api->getConfiguration(),
         ]);
     }
 
@@ -33,7 +34,7 @@ class ConfigurationController extends BaseController
     {
         return $this->view('configuration/set.phtml', $response, [
             'name' => 'Subscription',
-            'data' => $this->api->getSubscriptionsList()
+            'data' => $this->api->getSubscriptionsList(),
         ]);
     }
 
@@ -51,7 +52,7 @@ class ConfigurationController extends BaseController
     {
         return $this->view('configuration/set.phtml', $response, [
             'name' => 'Group',
-            'data' => $this->api->getGroupsList()
+            'data' => $this->api->getGroupsList(),
         ]);
     }
 

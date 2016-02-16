@@ -1,13 +1,15 @@
-<?php namespace AzureDns\Providers;
+<?php
 
+namespace AzureDns\Providers;
+
+use AzureDns\Http\Controllers\AuthController;
 use AzureDns\Http\Controllers\ConfigurationController;
 use AzureDns\Http\Controllers\RecordSetController;
 use AzureDns\Http\Controllers\ZoneController;
-use AzureDns\Http\Controllers\AuthController;
 use Interop\Container\ContainerInterface;
+use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\Views\PhpRenderer;
-use Pimple\Container;
 
 class ControllerProvider implements ServiceProviderInterface
 {
@@ -21,13 +23,14 @@ class ControllerProvider implements ServiceProviderInterface
      * It should not get services.
      *
      * @param Container|ContainerInterface $pimple A container instance
+     *
      * @return PhpRenderer
      */
     public function register(Container $pimple)
     {
         $this->identifyControllers($pimple);
         /**
-         * @var string $id
+         * @var string
          * @var \AzureDns\Http\Controllers\BaseController $controller
          */
         foreach ($this->controllers as $id => $controller) {

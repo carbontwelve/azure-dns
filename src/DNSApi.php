@@ -1,12 +1,13 @@
-<?php namespace AzureDns;
+<?php
 
-use AzureDns\Exceptions\IncompleteConfigurationException;
-use TheNetworg\OAuth2\Client\Provider\Azure;
+namespace AzureDns;
+
 use Aura\Session\Segment;
+use TheNetworg\OAuth2\Client\Provider\Azure;
 
 /**
- * Class DNSApi
- * @package AzureDns
+ * Class DNSApi.
+ *
  * @todo This should cache GET responses, then invalidate them based upon PUT/PATCH actions (cache invalidation is hard)
  */
 class DNSApi
@@ -38,7 +39,7 @@ class DNSApi
         if (!$this->configuration = $session->get('configuration')) {
             $this->configuration = [
                 'subscription' => null,
-                'group' => null,
+                'group'        => null,
             ];
             $session->set('configuration', $this->configuration);
         }
@@ -61,7 +62,7 @@ class DNSApi
     public function getConfig($key)
     {
         if (!in_array($key, ['subscription', 'group'])) {
-            throw new \Exception('[' . $key . '] is not a valid configuration key');
+            throw new \Exception('['.$key.'] is not a valid configuration key');
         }
 
         return $this->configuration[$key];
@@ -70,7 +71,7 @@ class DNSApi
     public function setConfig($key, $value)
     {
         if (!in_array($key, ['subscription', 'group'])) {
-            throw new \Exception('[' . $key . '] is not a valid configuration key');
+            throw new \Exception('['.$key.'] is not a valid configuration key');
         }
 
         $this->configuration[$key] = $value;
@@ -78,9 +79,10 @@ class DNSApi
     }
 
     /**
-     * Get the list of subscriptions the user is allowed to see
+     * Get the list of subscriptions the user is allowed to see.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/dn776325.aspx#ListSubscriptions
+     *
      * @return array
      */
     public function getSubscriptionsList()
@@ -94,15 +96,18 @@ class DNSApi
             }
             $subscriptions[$subscription['subscriptionId']] = $subscription['displayName'];
         }
+
         return $subscriptions;
     }
 
     /**
-     * Get the list of groups that belong to the configured subscription
+     * Get the list of groups that belong to the configured subscription.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/dn790529.aspx
-     * @return array
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function getGroupsList()
     {
@@ -117,11 +122,13 @@ class DNSApi
     }
 
     /**
-     * Get a list of DNS zones that are attached to the configured resource group
+     * Get a list of DNS zones that are attached to the configured resource group.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/mt130594.aspx
-     * @return array
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function getZonesList()
     {
@@ -130,10 +137,12 @@ class DNSApi
     }
 
     /**
-     * Create a new zone
+     * Create a new zone.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/mt130622.aspx
+     *
      * @param string $zone
+     *
      * @return null
      */
     public function createZone($zone)
@@ -141,12 +150,12 @@ class DNSApi
         return $this->putToAPI(
             'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}',
             [
-                'zone' => $zone
+                'zone' => $zone,
             ],
             [
-                'location' => 'global',
-                'tags' => new \stdClass(),
-                'properties' => new \stdClass()
+                'location'   => 'global',
+                'tags'       => new \stdClass(),
+                'properties' => new \stdClass(),
             ],
             '2015-05-04-preview'
         );
@@ -156,9 +165,12 @@ class DNSApi
      * Delete a given zone, if successful the azure api will respond with status code 200.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/mt130587.aspx
+     *
      * @param $zone
-     * @return bool
+     *
      * @throws \Exception
+     *
+     * @return bool
      */
     public function deleteZone($zone)
     {
@@ -176,12 +188,15 @@ class DNSApi
     }
 
     /**
-     * Get a list of record sets that are attached to the named $zone
+     * Get a list of record sets that are attached to the named $zone.
      *
      * @link https://msdn.microsoft.com/en-us/library/azure/mt130638.aspx
+     *
      * @param string $zone
-     * @return array
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function getRecordSetsList($zone)
     {
@@ -189,7 +204,7 @@ class DNSApi
             throw new \Exception('The zone name must be a non zero length string.');
         }
 
-        $allowedTypes = ["A", "AAAA", "CNAME", "MX", "NS", "SRV", "TXT", "SOA"];
+        $allowedTypes = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SRV', 'TXT', 'SOA'];
         $output = [];
         $data = $this->getFromAPI(
             'subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/dnsZones/{zone}/recordSets',
@@ -197,32 +212,35 @@ class DNSApi
             '2015-05-04-preview'
         );
 
-        foreach($data as $record) {
-            $find = '/providers/Microsoft.Network/dnszones/'. $zone .'/';
+        foreach ($data as $record) {
+            $find = '/providers/Microsoft.Network/dnszones/'.$zone.'/';
             $recordType = substr($record['id'], (strpos($record['id'], $find) + strlen($find)));
             $recordType = explode('/', $recordType);
             $recordType = array_shift($recordType);
 
-            if (! in_array($recordType, $allowedTypes)) {
-                throw new \Exception('The type ['. $recordType .'] is not one of: ' . implode(',', $allowedTypes));
+            if (!in_array($recordType, $allowedTypes)) {
+                throw new \Exception('The type ['.$recordType.'] is not one of: '.implode(',', $allowedTypes));
             }
 
-            if (! isset($output[$recordType])) {
+            if (!isset($output[$recordType])) {
                 $output[$recordType] = [];
             }
 
             array_push($output[$recordType], $record);
-        }unset($record, $data);
+        }
+        unset($record, $data);
 
         return $output;
     }
 
     /**
      * @param string $path
-     * @param array $attr
-     * @param null $version
-     * @return array
+     * @param array  $attr
+     * @param null   $version
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     private function getFromAPI($path, array $attr = [], $version = null)
     {
@@ -238,14 +256,16 @@ class DNSApi
     }
 
     /**
-     * @param string $path
-     * @param array $attr
-     * @param string $body
+     * @param string      $path
+     * @param array       $attr
+     * @param string      $body
      * @param null|string $version
-     * @return null
+     *
      * @throws \Exception
+     *
+     * @return null
      */
-    private function putToAPI($path, array $attr = [], $body, $version = null)
+    private function putToAPI($path, array $attr, $body, $version = null)
     {
         if (!is_null($version)) {
             $this->azure->API_VERSION = $version;
@@ -259,10 +279,11 @@ class DNSApi
     }
 
     /**
-     * Build the path from an input template string and attributes
+     * Build the path from an input template string and attributes.
      *
      * @param string $path
-     * @param array $attr
+     * @param array  $attr
+     *
      * @return mixed
      */
     private function buildAPIPath($path, array $attr = [])
@@ -276,7 +297,7 @@ class DNSApi
         }
 
         foreach ($attr as $key => $value) {
-            $path = str_replace('{' . $key . '}', $value, $path);
+            $path = str_replace('{'.$key.'}', $value, $path);
         }
         unset($key, $value);
 
@@ -284,16 +305,17 @@ class DNSApi
     }
 
     /**
-     * If the API returns an error message object then we should throw that error
+     * If the API returns an error message object then we should throw that error.
      *
      * @param $data
+     *
      * @throws \Exception
      */
     private function throwOnAPIError($data)
     {
         if (is_array($data) && isset($data['error'])) {
-            $exceptionClassName = '\\AzureDns\\Exceptions\\' . $data['error']['code'] . 'Exception';
-            $exceptionMessage = $data['error']['code'] . ': ' . $data['error']['message'];
+            $exceptionClassName = '\\AzureDns\\Exceptions\\'.$data['error']['code'].'Exception';
+            $exceptionMessage = $data['error']['code'].': '.$data['error']['message'];
 
             if (class_exists($exceptionClassName)) {
                 $exception = new $exceptionClassName($exceptionMessage);

@@ -1,12 +1,14 @@
-<?php namespace AzureDns\Providers;
+<?php
 
+namespace AzureDns\Providers;
+
+use Aura\Session\Segment;
 use AzureDns\AuthenticationContext;
 use AzureDns\DNSApi;
 use Interop\Container\ContainerInterface;
+use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\Views\PhpRenderer;
-use Aura\Session\Segment;
-use Pimple\Container;
 
 class DNSApiProvider implements ServiceProviderInterface
 {
@@ -17,6 +19,7 @@ class DNSApiProvider implements ServiceProviderInterface
      * It should not get services.
      *
      * @param Container|ContainerInterface $pimple A container instance
+     *
      * @return PhpRenderer
      */
     public function register(Container $pimple)

@@ -1,5 +1,8 @@
 <?php
 return [
+    'debug' => true,
+    'whoops.editor' => 'sublime',
+
     'displayErrorDetails' => true, // set to false in production
     'determineRouteBeforeAppMiddleware' => false,
     'outputBuffering' => 'append',

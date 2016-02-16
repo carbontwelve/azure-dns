@@ -7,3 +7,5 @@ $app->add(new \AzureDns\Http\Middleware\AzureActiveDirectoryAuthentication(
     $app->getContainer()->get(\AzureDns\AuthenticationContext::class),
     $app->getContainer()->get(\Aura\Session\Segment::class)
 ));
+
+$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);

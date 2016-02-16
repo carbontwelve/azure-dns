@@ -8,12 +8,6 @@
       "email": "simon.dann@gmail.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/protonphp/proton"
-    }
-  ],
   "require": {
     "php": ">=5.5.9",
     "thenetworg/oauth2-azure": "^1.0",

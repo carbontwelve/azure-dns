@@ -1,7 +1,9 @@
-<?php namespace AzureDns\Http\Controllers;
+<?php
 
-use Psr\Http\Message\ServerRequestInterface;
+namespace AzureDns\Http\Controllers;
+
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthController extends BaseController
 {

@@ -1,12 +1,14 @@
-<?php namespace AzureDns\Providers;
+<?php
 
-use Interop\Container\ContainerInterface;
-use Aura\Session\SessionFactory;
-use Pimple\ServiceProviderInterface;
-use Slim\Views\PhpRenderer;
+namespace AzureDns\Providers;
+
 use Aura\Session\Segment;
 use Aura\Session\Session;
+use Aura\Session\SessionFactory;
+use Interop\Container\ContainerInterface;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Slim\Views\PhpRenderer;
 
 class SessionProvider implements ServiceProviderInterface
 {
@@ -17,6 +19,7 @@ class SessionProvider implements ServiceProviderInterface
      * It should not get services.
      *
      * @param Container|ContainerInterface $pimple A container instance
+     *
      * @return PhpRenderer
      */
     public function register(Container $pimple)

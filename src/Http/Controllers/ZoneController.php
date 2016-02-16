@@ -1,8 +1,10 @@
-<?php namespace AzureDns\Http\Controllers;
+<?php
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+namespace AzureDns\Http\Controllers;
+
 use AzureDns\DNSApi;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ZoneController extends BaseController
 {
@@ -31,7 +33,7 @@ class ZoneController extends BaseController
         }
 
         return $this->view('zones\index.phtml', $response, [
-            'zones' => $this->api->getZonesList()
+            'zones' => $this->api->getZonesList(),
         ]);
     }
 
@@ -56,7 +58,8 @@ class ZoneController extends BaseController
         // Attempt to add zone
         $data = $this->api->createZone($input['zone']);
 
-        $this->session->setFlash('success', 'Zone "'. $data['name'] .'" successfully created.');
+        $this->session->setFlash('success', 'Zone "'.$data['name'].'" successfully created.');
+
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->container->get('router')->pathFor('zoneIndex'));
@@ -82,7 +85,7 @@ class ZoneController extends BaseController
 
         $this->api->deleteZone($args['zone']);
 
-        $this->session->setFlash('success', 'The zone ['. $args['zone'] .'] was successfully deleted.');
+        $this->session->setFlash('success', 'The zone ['.$args['zone'].'] was successfully deleted.');
 
         return $response
             ->withStatus(301)

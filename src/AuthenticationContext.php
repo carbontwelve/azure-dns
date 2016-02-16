@@ -1,11 +1,12 @@
-<?php namespace AzureDns;
+<?php
+
+namespace AzureDns;
 
 use Aura\Session\Segment;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class AuthenticationContext
 {
-
     /**
      * @var Azure
      */
@@ -16,13 +17,15 @@ class AuthenticationContext
 
     /**
      * AuthenticationContext constructor.
+     *
      * @param array $config
+     *
      * @throws \Exception
      */
-    public function __construct(array $config = [], Segment $session)
+    public function __construct(array $config, Segment $session)
     {
         if (count($config) === 0) {
-            throw new \Exception("The class AuthenticationContext requires config to be set with clientId and clientSecret set.");
+            throw new \Exception('The class AuthenticationContext requires config to be set with clientId and clientSecret set.');
         }
 
         $this->provider = new Azure($config);
@@ -48,7 +51,7 @@ class AuthenticationContext
         $expires = $token['expires'];
         $now = date('U');
 
-        if ( ( $expires - $now ) < 0 ) {
+        if (($expires - $now) < 0) {
             return false;
         }
 
@@ -58,18 +61,18 @@ class AuthenticationContext
     public function authenticate()
     {
         if (empty($_GET['state']) || ($_GET['state'] !== $this->session->get('oauth2state'))) {
-            echo $this->session->get('oauth2state') . " does not equal " . $_GET['state'];
+            echo $this->session->get('oauth2state').' does not equal '.$_GET['state'];
             $this->session->clear();
             exit();
         }
 
         $token = $this->provider->getAccessToken('authorization_code', [
-            'code' => $_GET['code'],
-            'resource' => 'https://management.azure.com/'
+            'code'     => $_GET['code'],
+            'resource' => 'https://management.azure.com/',
         ]);
 
         try {
-            $user = $this->provider->get("me", $token);
+            $user = $this->provider->get('me', $token);
         } catch (\Exception $e) {
             return false;
         }

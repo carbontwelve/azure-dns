@@ -1,9 +1,11 @@
-<?php namespace AzureDns\Providers;
+<?php
+
+namespace AzureDns\Providers;
 
 use Interop\Container\ContainerInterface;
+use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\Views\PhpRenderer;
-use Pimple\Container;
 
 class SettingsProvider implements ServiceProviderInterface
 {
@@ -14,10 +16,11 @@ class SettingsProvider implements ServiceProviderInterface
      * It should not get services.
      *
      * @param Container|ContainerInterface $pimple A container instance
+     *
      * @return PhpRenderer
      */
     public function register(Container $pimple)
     {
-        $pimple['settings'] = new \Slim\Collection(require __DIR__ . '/../Config/app.php');
+        $pimple['settings'] = new \Slim\Collection(require __DIR__.'/../Config/app.php');
     }
 }

@@ -1,8 +1,10 @@
-<?php namespace AzureDns\Http\Controllers;
-;
+<?php
+
+namespace AzureDns\Http\Controllers;
+
+use Aura\Session\Segment;
 use Interop\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Aura\Session\Segment;
 
 class BaseController
 {
@@ -40,6 +42,7 @@ class BaseController
 
         /** @var \Slim\Views\PhpRenderer $renderer */
         $renderer = $this->container['renderer'];
+
         return $renderer->render($response, $view, $args);
     }
 }

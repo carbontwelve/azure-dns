@@ -1,8 +1,10 @@
-<?php namespace AzureDns\Http\Controllers;
+<?php
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+namespace AzureDns\Http\Controllers;
+
 use AzureDns\DNSApi;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RecordSetController extends BaseController
 {
@@ -31,19 +33,17 @@ class RecordSetController extends BaseController
         }
 
         return $this->view('record-sets/index.phtml', $response, [
-            'zone' => $args['zone'],
-            'records' => $this->api->getRecordSetsList($args['zone'])
+            'zone'    => $args['zone'],
+            'records' => $this->api->getRecordSetsList($args['zone']),
         ]);
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-
     }
 
     public function store(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-
     }
 
     public function update(ServerRequestInterface $request, ResponseInterface $response, array $args)
@@ -51,11 +51,11 @@ class RecordSetController extends BaseController
         $input = $request->getParsedBody();
 
         $output = [
-            'location' => 'global',
-            'tags' => [],
+            'location'   => 'global',
+            'tags'       => [],
             'properties' => [
-                "TTL" => $input['meta']['TTL']
-            ]
+                'TTL' => $input['meta']['TTL'],
+            ],
         ];
 
         $output['properties'][$input['meta']['type']] = $input[$input['meta']['type']];
@@ -67,6 +67,5 @@ class RecordSetController extends BaseController
 
     public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-
     }
 }

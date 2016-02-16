@@ -1,3 +1,7 @@
-<?php namespace AzureDns\Exceptions;
+<?php
 
-class SubscriptionNotFoundException extends \Exception {}
+namespace AzureDns\Exceptions;
+
+class SubscriptionNotFoundException extends \Exception
+{
+}

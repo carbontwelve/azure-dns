@@ -11,13 +11,16 @@ if (!function_exists('dd')) {
      */
     function dd($dump)
     {
-        var_dump($dump);
-        die;
+        if (function_exists('dump')) {
+            dump($dump);
+        } else {
+            var_dump($dump);
+        }
+        exit();
     }
 }
 
 if (!function_exists('templatePath')) {
-
     /**
      * @param string $name
      *
